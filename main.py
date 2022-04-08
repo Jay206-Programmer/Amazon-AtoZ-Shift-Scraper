@@ -11,10 +11,9 @@ driver.find_element(By.ID, "login").send_keys('shuhetal')
 driver.find_element(By.ID, "password").send_keys('Ketan@1970')
 driver.find_element(By.ID,"buttonLogin").click()
 
-# el = WebDriverWait(driver,100).until(lambda d: d.find_element(By.NAME,"otpDestinationSelectionIndex"))
-# el.click()
-time.sleep(3)
-driver.find_element(By.XPATH, "//input[@value='1']").click()
+WebDriverWait(driver,100).until(lambda d: d.find_element(By.XPATH, "//input[@value='1']")).click()
+# time.sleep(3)
+# driver.find_element(By.XPATH, "//input[@value='1']").click()
 driver.find_element(By.ID, "buttonContinue").click()
 
 print("\n\nPlease Enter OTP: ")
