@@ -22,4 +22,4 @@ Automated Web Scrapper for Booking new Shifts as soon as they are available. Cre
 
 3. Download **[Edge WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp)**, Extract it and add folder path to PATH.
 
-4. Run **main.py** file. 
+4. Run **main.py** file.
