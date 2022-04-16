@@ -1,5 +1,6 @@
 #* Library Imports
 from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
 import time
 import json
 
@@ -15,6 +16,9 @@ class HandleAtoZLogin:
     def __init__(self):
         self.ATOZ = DriverUtility("https://atoz.amazon.work/shifts/dashboard")
         self.login()
+        self.findShifts()
+        
+        time.sleep(100)
         self.ATOZ.get_driver().quit()
     
     def handle_initial_login_page(self):
@@ -35,9 +39,10 @@ class HandleAtoZLogin:
         
         self.ATOZ.find_and_write(By.ID, "code", otp)
         self.ATOZ.find_and_click(By.ID, "buttonVerifyIdentity")
+
+        print("OTP Page Complete")
         
         self.ATOZ.find_and_click(By.CLASS_NAME, "atoz-find-shifts-quicklinks-button", wait=True)
-        print("OTP Page Complete")
     
     def login(self):
         
@@ -47,7 +52,37 @@ class HandleAtoZLogin:
         #* Handling OTP
         self.handle_otp_page()
         
-        time.sleep(100)
+    def handle_bs4(self, page_source):
+        soup = BeautifulSoup(page_source, 'html.parser')
+        
+        # with open("source.txt", 'wt', encoding='utf-8') as html_file:
+        #     for line in soup.prettify():
+        #         html_file.write(line)
+        days = []
+        days_selector = soup.find_all('button', class_='dayButton')
+
+        for day_selector in days_selector:
+            available_day_div = day_selector.find('span', class_ = "badge")
+            if available_day_div is not None:
+                final_date = ""
+                date = day_selector.find("span", class_ = "atoz-date-string-full").find_all("div")
+                for dt in date:
+                    final_date += dt.get_text()
+                days.append(final_date)
+        
+        return days
+        
+    def findShifts(self):
+        
+        print("Find Shifts Started")
+        
+        #* Get Page Source
+        source = self.ATOZ.get_page_source()
+        print(source)
+        
+        #* Handover to BS4
+        print(self.handle_bs4(source))
+        
     
 class HandleGmailLogin:
     
